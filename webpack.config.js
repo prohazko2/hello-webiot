@@ -1,11 +1,11 @@
 const fs = require("fs");
 const path = require("path");
+const glob = require("glob");
+
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const config = {
-  entry: {
-    "arduino-blinky": "./arduino-blinky/src/app.ts",
-  },
+  entry: {},
   mode: "development",
   devtool: "source-map",
   module: {
@@ -25,14 +25,25 @@ const config = {
     path: path.resolve(__dirname, "./build"),
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      title: "hello",
-    }),
+    // new HtmlWebpackPlugin({
+    //   title: "hello",
+    // }),
   ],
-  devServer: {
-    port: 9080,
-    contentBase: path.join(__dirname, "build"),
-  },
 };
+
+const apps = glob.sync("*/src/app.ts", { absolute: true });
+for (const entry of apps) {
+  const name = path.basename(path.resolve(entry, "../.."));
+  config.entry[name] = entry;
+  config.plugins.push(
+    new HtmlWebpackPlugin({
+      appName: name,
+      chunks: [name],
+      title: name,
+      //template: path.resolve(__dirname, `./index.html`),
+      filename: path.resolve(__dirname, `./build/${name}.html`),
+    })
+  );
+}
 
 module.exports = config;
