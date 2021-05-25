@@ -1,0 +1,27 @@
+{
+  "name": "hello-webusb",
+  "version": "1.0.0",
+  "description": "Playing with WebUSB and PlatformIO",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --progress --profile",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prohazko2/hello-webusb.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/prohazko2/hello-webusb/issues"
+  },
+  "homepage": "https://github.com/prohazko2/hello-webusb#readme",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.3.1",
+    "ts-loader": "^9.2.2",
+    "typescript": "^4.2.4",
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0"
+  }
+}
