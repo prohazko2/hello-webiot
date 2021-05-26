@@ -58,17 +58,21 @@ export class Serial {
     this.connected = false;
   }
 
-  async *read() {
+  async *readLoop() {
     await this.connect();
 
     for (;;) {
-      const result = await this.device.transferIn(this.endpointIn, 64);
-
-      yield result;
+      yield this.device.transferIn(this.endpointIn, 64);
     }
   }
 
-  write(data: BufferSource) {
+  async read(length = 64) {
+    await this.connect();
+    return this.device.transferIn(this.endpointIn, length);
+  }
+
+  async write(data: BufferSource) {
+    await this.connect();
     return this.device.transferOut(this.endpointOut, data);
   }
 }

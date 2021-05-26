@@ -33,7 +33,7 @@ class App extends Component<any, State> {
     }
 
     try {
-      for await (const { status, data } of serial.read()) {
+      for await (const { status, data } of serial.readLoop()) {
         let response = status.toString();
         if (data) {
           response = `${response}: ${new TextDecoder().decode(data)}`;
