@@ -14,8 +14,9 @@ void setup()
         ;
     }
     Serial.begin(9600);
-    Serial.write("Sketch begins.\r\n> ");
+    Serial.write("init");
     Serial.flush();
+
     pinMode(ledPin, OUTPUT);
 }
 
@@ -35,7 +36,7 @@ void loop()
             Serial.write("\r\nTurning LED off.");
             digitalWrite(ledPin, LOW);
         }
-        Serial.write("\r\n> ");
+        //Serial.write("\r\n> ");
         Serial.flush();
     }
 }

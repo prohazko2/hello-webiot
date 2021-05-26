@@ -9,6 +9,9 @@ const config = {
   entry: {},
   mode: "development",
   devtool: "source-map",
+  experiments: {
+    topLevelAwait: true,
+  },
   module: {
     rules: [
       {
@@ -53,7 +56,8 @@ const config = {
   },
 };
 
-const apps = glob.sync("*/src/app.ts", { absolute: true });
+const apps = glob.sync("*/web/app.{ts,tsx}", { absolute: true });
+
 for (const entry of apps) {
   const name = path.basename(path.resolve(entry, "../.."));
   config.entry[name] = entry;
