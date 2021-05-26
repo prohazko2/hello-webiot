@@ -19,8 +19,13 @@ class App extends Component<any, { response: string; connected: boolean }> {
 
     serial = new Serial(d);
 
-    await serial.connect();
-    this.setState({ connected: true, response: "" });
+    try {
+      await serial.connect();
+      this.setState({ connected: true, response: "" });
+    } catch (err) {
+      this.setState({ connected: false, response: `err: ${err.toString()}` });
+      return;
+    }
 
     try {
       for await (const { status, data } of serial.read()) {
@@ -61,8 +66,8 @@ class App extends Component<any, { response: string; connected: boolean }> {
           <button onClick={() => this.connect()}>connect</button>
         )}
 
-        <button onClick={() => this.ledOn()}>on</button>
-        <button onClick={() => this.ledOff()}>off</button>
+        {!!connected && <button onClick={() => this.ledOn()}>on</button>}
+        {!!connected && <button onClick={() => this.ledOff()}>off</button>}
 
         <div>
           <pre>{response}</pre>
