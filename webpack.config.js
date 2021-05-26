@@ -3,6 +3,7 @@ const path = require("path");
 const glob = require("glob");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const config = {
   entry: {},
@@ -17,7 +18,7 @@ const config = {
       },
       {
         test: /\.(css)$/,
-        use: ["style-loader", "css-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
     ],
   },
@@ -28,7 +29,7 @@ const config = {
     //filename: '[name].[contenthash:8].js',
     path: path.resolve(__dirname, "./build"),
   },
-  plugins: [],
+  plugins: [new MiniCssExtractPlugin()],
   optimization: {
     runtimeChunk: "single",
     splitChunks: {
