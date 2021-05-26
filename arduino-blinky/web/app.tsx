@@ -22,22 +22,20 @@ class App extends Component<any, { response: string; connected: boolean }> {
     await serial.connect();
     this.setState({ connected: true, response: "" });
 
-    let response = "";
     try {
       for await (const { status, data } of serial.read()) {
-        response = status.toString();
+        let response = status.toString();
         if (data) {
           response = `${response}: ${new TextDecoder().decode(data)}`;
         }
         this.setState({ response });
-        console.log("response", response);
       }
     } catch (err) {
       console.log("serail read loop err", err);
-      response = `err: ${err.toString()}`;
+      this.setState({ response: `err: ${err.toString()}` });
     }
 
-    this.setState({ connected: false, response });
+    this.setState({ connected: false });
   }
 
   async disconnect() {
@@ -46,11 +44,11 @@ class App extends Component<any, { response: string; connected: boolean }> {
   }
 
   async ledOn() {
-    await serial.write(new TextEncoder().encode("H"));
+    await serial?.write(new TextEncoder().encode("H"));
   }
 
   async ledOff() {
-    await serial.write(new TextEncoder().encode("L"));
+    await serial?.write(new TextEncoder().encode("L"));
   }
 
   render() {

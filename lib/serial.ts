@@ -59,11 +59,11 @@ export class Serial {
   }
 
   async *read() {
-    console.log('start reading');
-    
     await this.connect();
+
     for (;;) {
       const result = await this.device.transferIn(this.endpointIn, 64);
+
       yield result;
     }
   }

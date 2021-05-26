@@ -36,7 +36,7 @@ void loop()
             Serial.write("\r\nTurning LED off.");
             digitalWrite(ledPin, LOW);
         }
-        //Serial.write("\r\n> ");
+        Serial.write("\r\n");
         Serial.flush();
     }
 }
