@@ -4,6 +4,8 @@ const http = require("http");
 const path = require("path");
 const base = path.resolve(__dirname, "build");
 
+const port = +(process.env.PORT || 9080);
+
 const webpack = require("webpack");
 const config = require("./webpack.config");
 
@@ -21,7 +23,7 @@ const watching = compiler.watch({}, (err, stats) => {
     console.error(err);
     return;
   }
-  log("watcher", `code updated with hash: ${stats.hash}`);
+  log("webpack", `code updated with hash: ${stats.hash}`);
 });
 
 function resolveSafe(base, target) {
@@ -54,17 +56,17 @@ http
     try {
       let data = (await fs.readFile(file)).toString();
       data = renderLinks(data);
-
-      log("http ok", req.url);
-
+      
+      log("http:ok", req.url);
       res.writeHead(200);
       res.end(data);
     } catch (err) {
-      log("http err", req.url, err.toString());
-
+      log("http:err", req.url, err.toString());
       res.writeHead(404);
       res.end(JSON.stringify(err));
       return;
     }
   })
-  .listen(9080);
+  .listen(port);
+
+log("http", `start server at http://localhost:${port}/`);
