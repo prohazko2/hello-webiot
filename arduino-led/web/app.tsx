@@ -5,11 +5,14 @@ import { requestDevice } from "../../lib/usb";
 
 let serial: Serial = null;
 
-class App extends Component<any, { response: string; connected: boolean }> {
+type State = { response: string; connected: boolean; analog: number };
+
+class App extends Component<any, State> {
   state = {
     response: "",
     connected: false,
-  };
+    analog: 10,
+  } as State;
 
   async connect() {
     let [d] = await navigator.usb.getDevices();
@@ -21,6 +24,8 @@ class App extends Component<any, { response: string; connected: boolean }> {
 
     try {
       await serial.connect();
+      await this.ledOn();
+      
       this.setState({ connected: true, response: "" });
     } catch (err) {
       this.setState({ connected: false, response: `err: ${err.toString()}` });
@@ -49,15 +54,20 @@ class App extends Component<any, { response: string; connected: boolean }> {
   }
 
   async ledOn() {
-    await serial?.write(new TextEncoder().encode("H"));
+    await this.ledFade(255);
   }
 
   async ledOff() {
-    await serial?.write(new TextEncoder().encode("L"));
+    await this.ledFade(0);
+  }
+
+  async ledFade(analog: number) {
+    this.setState({ analog });
+    await serial?.write(Uint8Array.from([analog]));
   }
 
   render() {
-    const { connected, response } = this.state;
+    const { connected, response, analog } = this.state;
     return (
       <div>
         {connected ? (
@@ -66,8 +76,20 @@ class App extends Component<any, { response: string; connected: boolean }> {
           <button onClick={() => this.connect()}>connect</button>
         )}
 
-        {!!connected && <button onClick={() => this.ledOn()}>on</button>}
-        {!!connected && <button onClick={() => this.ledOff()}>off</button>}
+        {!!connected && (
+          <div>
+            <button onClick={() => this.ledOff()}>off</button>
+            <input
+              type="range"
+              value={analog}
+              onChange={(e) => this.ledFade(+e.target.value)}
+              min="0"
+              max="255"
+              step="5"
+            />
+            <button onClick={() => this.ledOn()}>on</button>
+          </div>
+        )}
 
         <div>
           <pre>{response}</pre>

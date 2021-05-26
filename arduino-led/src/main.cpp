@@ -25,17 +25,14 @@ void loop()
     if (Serial && Serial.available())
     {
         int byte = Serial.read();
-        Serial.write(byte);
-        if (byte == 'H')
-        {
-            Serial.write("\r\nTurning LED on.");
-            digitalWrite(ledPin, HIGH);
-        }
-        else if (byte == 'L')
-        {
-            Serial.write("\r\nTurning LED off.");
-            digitalWrite(ledPin, LOW);
-        }
+        byte = max(byte, 0);
+        byte = min(byte, 255);
+
+        Serial.write("got: ");
+        Serial.write(String(byte).c_str());
+
+        analogWrite(ledPin, byte);
+
         Serial.write("\r\n");
         Serial.flush();
     }
