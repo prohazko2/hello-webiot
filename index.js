@@ -30,16 +30,17 @@ function resolveSafe(base, target) {
 }
 
 function renderLinks(html) {
-  const links = `
+  const links = Object.keys(config.entry)
+    .map((k) => `<li><a href="/${k}.html">${k}</a></li>`)
+    .join("\n");
+  const nav = `
   <nav>
     <ul>
-    ${Object.keys(config.entry)
-      .map((k) => `<li><a href="/${k}.html">${k}</a></li>`)
-      .join("\n")}
+${links}
     </ul>
   </nav>
   `;
-  html = html.replace("<!-- demo-links -->", links);
+  html = html.replace("<!-- demo-links -->", nav);
   return html;
 }
 

@@ -1,1 +1,1 @@
-console.log('x0')
+console.log('blinky')
