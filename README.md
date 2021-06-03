@@ -1,4 +1,4 @@
-# hello-web{usb,serial,bluetooth}
+# `hello-web{usb,serial,bluetooth}`
 
 Playing with 
 - WebUSB
