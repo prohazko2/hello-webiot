@@ -1,3 +1,6 @@
-# hello-webusb
+# hello-web{usb,serial,bluetooth}
 
-Playing with WebUSB and PlatformIO
+Playing with 
+- WebUSB
+- WebSerial
+- WebBluetooth
